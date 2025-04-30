@@ -1,5 +1,6 @@
 package com.substring.chat.MyChatApp.websocket;
 
+import com.substring.chat.MyChatApp.service.MessageService;
 import com.substring.chat.MyChatApp.service.RedisPubSubService;
 import com.substring.chat.MyChatApp.service.WebSocketSessionManager;
 import org.springframework.stereotype.Component;
@@ -11,10 +12,12 @@ public class WebSocketRedisHandler extends TextWebSocketHandler {
 
     private final RedisPubSubService redisPubSubService;
     private final WebSocketSessionManager sessionManager;
+    private final MessageService messageService;
 
-    public WebSocketRedisHandler(RedisPubSubService redisPubSubService, WebSocketSessionManager sessionManager) {
+    public WebSocketRedisHandler(RedisPubSubService redisPubSubService, WebSocketSessionManager sessionManager, MessageService messageService) {
         this.redisPubSubService = redisPubSubService;
         this.sessionManager = sessionManager;
+        this.messageService = messageService;
 
         // Subscribe to Redis on startup
         this.redisPubSubService.subscribe("chatroom", message -> {
@@ -34,6 +37,8 @@ public class WebSocketRedisHandler extends TextWebSocketHandler {
 
     @Override
     protected void handleTextMessage(WebSocketSession session, TextMessage message) throws Exception {
+        String content = message.getPayload();
+        messageService.saveMessage(content);
         redisPubSubService.publish("chatroom", message.getPayload());
     }
 }
