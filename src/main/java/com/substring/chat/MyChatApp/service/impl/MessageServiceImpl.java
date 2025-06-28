@@ -18,6 +18,8 @@ public class MessageServiceImpl implements MessageService {
     public void saveMessage(String content) {
         ChatMessage message = new ChatMessage();
         message.setContent(content);
+        System.out.println("Message beign saved on database");
         repository.save(message);
+        System.out.println("Message succesfully saved on database");
     }
 }

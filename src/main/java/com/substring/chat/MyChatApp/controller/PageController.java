@@ -15,7 +15,7 @@ public class PageController {
 
     @RequestMapping("/")
     public String index(){
-        System.out.println("func lodiang");
+        System.out.println("Page loaded");
         return "main";
     }
 }
