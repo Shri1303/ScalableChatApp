@@ -34,6 +34,8 @@ public class WebSocketRedisHandler extends TextWebSocketHandler {
 
     @Override
     protected void handleTextMessage(WebSocketSession session, TextMessage message) throws Exception {
-        redisPubSubService.publish("chatroom", message.getPayload());
+        String content = message.getPayload();
+        System.out.println("Message beign published on Redis"+content);
+        redisPubSubService.publish("chatroom", content);
     }
 }

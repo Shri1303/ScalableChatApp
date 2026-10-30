@@ -4,25 +4,26 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import jakarta.persistence.*;
+import java.time.LocalDateTime;
+import java.util.UUID;
 
 @Getter
 @Setter
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
+@Entity
 public class ChatMessage {
+
+    @Id
+    @GeneratedValue
+    private UUID id;
+
     private String content;
-    private String sender;
-    private MessageType type;
+    private LocalDateTime sentAt = LocalDateTime.now();
 
-    public String getSender() {
-        return sender;
+    public void setContent(String content) {
+        this.content=content;
     }
 
-    public enum MessageType {
-        CHAT,
-        JOIN,
-        LEAVE
-    }
-
-    // Getters and setters
 }
